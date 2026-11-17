@@ -1790,10 +1790,10 @@
         const dN = gn - n0, dE = ge - e0;
         const ch = dN * Math.cos(azRad) + dE * Math.sin(azRad);
         const offset = -dN * Math.sin(azRad) + dE * Math.cos(azRad);
-        const sideTag = Math.abs(offset) >= 0.0005 ? (offset > 0 ? ' (R)' : ' (L)') : '';
+        //const sideTag = Math.abs(offset) >= 0.0005 ? (offset > 0 ? ' (R)' : ' (L)') : '';
 
         document.getElementById('g2l-ch').innerText = formatSigned(ch, 3) + ' m';
-        document.getElementById('g2l-off').innerText = formatSigned(offset, 3) + ' m' + sideTag;
+        document.getElementById('g2l-off').innerText = formatSigned(offset, 3) + ' m'; // + sideTag;
         document.getElementById('g2l-axis-az').innerText = 'AZ: ' + formatDMS(azDeg, 1);
         setStatus('DONE');
       }
