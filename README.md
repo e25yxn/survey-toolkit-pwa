@@ -1,4 +1,4 @@
-# SURVEY_TOOLKIT OS v2.2 (PWA Edition)
+# SURVEY_TOOLKIT OS v2.2.2 (PWA Edition)
 
 เว็บแอปพลิเคชันคำนวณงานสำรวจ (COGO & Alignment Transformation) สไตล์ **1-bit Monochrome Desktop** ออกแบบมาเพื่อการทำงานหน้างานแบบ **Offline-First 100%** รองรับการติดตั้งลงหน้าจอมือถือ (PWA) และสามารถซิงค์ข้อมูลหมุดควบคุม (`ControlPoints`) กับประวัติการคำนวณ (`SurveyLog`) เข้ากับฐานข้อมูล **Google Sheets** อัตโนมัติเมื่อกลับมามีสัญญาณอินเทอร์เน็ต
 
