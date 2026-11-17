@@ -1704,11 +1704,11 @@
         const desRad = desAzDeg * (Math.PI / 180);
         const dCh = dN * Math.cos(desRad) + dE * Math.sin(desRad);
         const offset = -dN * Math.sin(desRad) + dE * Math.cos(desRad);
-        //const sideTag = Math.abs(offset) >= 0.0005 ? (offset > 0 ? ' (R)' : ' (L)') : '';
+        
 
         document.getElementById('dev-err').innerText = err.toFixed(3) + ' m';
         document.getElementById('dev-ch').innerText = formatSigned(dCh, 3) + ' m';
-        document.getElementById('dev-off').innerText = formatSigned(offset, 3) + ' m';// + sideTag;
+        document.getElementById('dev-off').innerText = formatSigned(offset, 3) + ' m';
         document.getElementById('dev-dn').innerText = formatSigned(dN, 3);
         document.getElementById('dev-de').innerText = formatSigned(dE, 3);
         document.getElementById('dev-az').innerText = formatDMS(errAz, 1);
@@ -1790,10 +1790,10 @@
         const dN = gn - n0, dE = ge - e0;
         const ch = dN * Math.cos(azRad) + dE * Math.sin(azRad);
         const offset = -dN * Math.sin(azRad) + dE * Math.cos(azRad);
-        //const sideTag = Math.abs(offset) >= 0.0005 ? (offset > 0 ? ' (R)' : ' (L)') : '';
 
+        
         document.getElementById('g2l-ch').innerText = formatSigned(ch, 3) + ' m';
-        document.getElementById('g2l-off').innerText = formatSigned(offset, 3) + ' m'; // + sideTag;
+        document.getElementById('g2l-off').innerText = formatSigned(offset, 3) + ' m';
         document.getElementById('g2l-axis-az').innerText = 'AZ: ' + formatDMS(azDeg, 1);
         setStatus('DONE');
       }
