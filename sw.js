@@ -1,12 +1,13 @@
-const CACHE_NAME = 'survey-toolkit-os-v2.1';
+const CACHE_NAME = 'survey-toolkit-pwa-v2.2';
 
 const APP_SHELL = [
   './',
   './index.html',
-  './manifest.json'
+  './manifest.json',
+  './icon.svg'
 ];
 
-// 1. ติดตั้ง Service Worker และเก็บไฟล์หลักลง Cache ในเครื่อง
+// 1. ติดตั้ง Service Worker และแคชไฟล์หลักลงเครื่อง
 self.addEventListener('install', event => {
   event.waitUntil(
     caches.open(CACHE_NAME)
@@ -15,7 +16,7 @@ self.addEventListener('install', event => {
   );
 });
 
-// 2. ลบ Cache เวอร์ชันเก่าอัตโนมัติเมื่อมีการอัปเดตเวอร์ชัน
+// 2. ล้างแคชเวอร์ชันเก่าอัตโนมัติเมื่ออัปเดตเวอร์ชันใหม่
 self.addEventListener('activate', event => {
   event.waitUntil(
     caches.keys()
@@ -28,21 +29,21 @@ self.addEventListener('activate', event => {
   );
 });
 
-// 3. จัดการการดึงข้อมูล (Offline-First สำหรับตัวแอปและฟอนต์)
+// 3. จัดการโหลดไฟล์แบบ Offline-First
 self.addEventListener('fetch', event => {
   const req = event.request;
 
-  // ข้ามคำสั่ง POST (Login / Save Log ไปยัง Google Apps Script)
+  // ข้ามคำสั่ง POST (Login / Sync Log / Save BM ไปยัง Google Apps Script)
   if (req.method !== 'GET') return;
 
   const url = new URL(req.url);
 
-  // ไม่แคชข้อมูลที่วิ่งไปยังเซิร์ฟเวอร์ Google Apps Script
+  // ไม่แคชข้อมูลที่วิ่งไปยัง Google Apps Script
   if (url.hostname.includes('script.google.com') || url.hostname.includes('script.googleusercontent.com')) {
     return;
   }
 
-  // เปิดหน้าเว็บหลัก (รองรับทั้งลิงก์ปกติ และลิงก์ที่มี ?api=... ต่อท้าย)
+  // เปิดหน้าแอปหลัก (รองรับทั้งลิงก์ปกติ และลิงก์พ่วง ?api=...)
   if (req.mode === 'navigate') {
     event.respondWith(
       caches.match('./index.html', { ignoreSearch: true }).then(cachedPage => {
@@ -56,7 +57,7 @@ self.addEventListener('fetch', event => {
     return;
   }
 
-  // แคชไฟล์ภายในแอป และฟอนต์จาก Google Fonts ไว้ใช้ตอนออฟไลน์
+  // แคชไฟล์ภายในแอป และฟอนต์ Google Fonts ไว้ใช้งานตอนออฟไลน์
   const isSameOrigin = url.origin === self.location.origin;
   const isGoogleFont = url.hostname === 'fonts.googleapis.com' || url.hostname === 'fonts.gstatic.com';
 
