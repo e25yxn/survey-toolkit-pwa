@@ -382,10 +382,17 @@
         margin-top: 2px;
       }
 
+      .field-wrap {
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-end;
+      }
+
       .field-wrap label {
         display: block;
         font-size: 11px;
-        margin-bottom: 2px;
+        line-height: 1.25;
+        margin-bottom: 3px;
       }
 
       input[type="number"],
@@ -583,7 +590,7 @@
         <span class="menu-item" id="menuDbBtn" style="display:none;" onclick="openDbSheet()">[DB]</span>
         <span class="menu-item" id="menuLogoutBtn" style="display:none;" onclick="doLogout()">[OUT]</span>
       </div>
-      <div class="menu-clock" id="sysClock">11/17/26 19:30</div>
+      <div class="menu-clock" id="sysClock">11/18/26 03:08</div>
     </div>
 
     <!-- Desktop / Window -->
@@ -654,7 +661,7 @@
               <div class="app-tile" onclick="openApp('inverse')">
                 <div class="tile-icon"><svg width="30" height="30" viewBox="0 0 16 16" fill="currentColor"><path d="M2 12h3v3H2v-3zm9-11h3v3h-3V1zM5 11l6-6 1 1-6 6-1-1z"/></svg></div>
                 <div class="tile-code">01 INVERSE</div>
-                <div class="tile-thai">ระยะ & อะซิมุท</div>
+                <div class="tile-thai">ระยะ &amp; อะซิมุท</div>
               </div>
               <div class="app-tile" onclick="openApp('polar')">
                 <div class="tile-icon"><svg width="30" height="30" viewBox="0 0 16 16" fill="currentColor"><path d="M2 13h2v2H2v-2zm2-2l7-7V2h3v3h-2l-7 7-1-1zm5-8h2v2H9V3z"/></svg></div>
@@ -668,13 +675,13 @@
               </div>
               <div class="app-tile" onclick="openApp('g2l')">
                 <div class="tile-icon"><svg width="30" height="30" viewBox="0 0 16 16" fill="currentColor"><path d="M1 2h6v6H1V2zm2 2v2h2V4H3zm6 5h6v6H9V9zm2 2v2h2v-2h-2zM8 4h4v3h-2V6H8V4z"/></svg></div>
-                <div class="tile-code">04 GLO -> LOC</div>
-                <div class="tile-thai">Global -> CH/Offset</div>
+                <div class="tile-code">04 GLO -&gt; LOC</div>
+                <div class="tile-thai">Global -&gt; CH/Offset</div>
               </div>
               <div class="app-tile" onclick="openApp('l2g')">
                 <div class="tile-icon"><svg width="30" height="30" viewBox="0 0 16 16" fill="currentColor"><path d="M9 2h6v6H9V2zm2 2v2h2V4h-2zM1 9h6v6H1V9zm2 2v2h2v-2H3zm1-5h4v2H6v2H4V6z"/></svg></div>
-                <div class="tile-code">05 LOC -> GLO</div>
-                <div class="tile-thai">CH/Offset -> Global</div>
+                <div class="tile-code">05 LOC -&gt; GLO</div>
+                <div class="tile-thai">CH/Offset -&gt; Global</div>
               </div>
               <div class="app-tile" onclick="openApp('setout')">
                 <div class="tile-icon"><svg width="30" height="30" viewBox="0 0 16 16" fill="currentColor"><path d="M7 1h2v3H7V1zM3 13l4-7h2l4 7h-2l-3-5.2L5 13H3zm4-2h2v4H7v-4z"/></svg></div>
@@ -916,10 +923,10 @@
               </div>
             </div>
             <div class="point-group">
-              <span class="point-title">TARGET ALIGNMENT <span class="thai-hint">(ระยะแนวเส้นทาง)</span></span>
+              <span class="point-title">TARGET ALIGNMENT <span class="thai-hint">(ตาม +Y / ขวา+ ซ้าย-)</span></span>
               <div class="input-grid-2">
                 <div class="field-wrap"><label>CHAINAGE (+Y)</label><input type="number" id="l2g-ch" inputmode="decimal" placeholder="0.000" step="any"></div>
-                <div class="field-wrap"><label>OFFSET (ขวา+/ซ้าย-)</label><input type="number" id="l2g-off" inputmode="decimal" placeholder="0.000" step="any"></div>
+                <div class="field-wrap"><label>OFFSET (+R / -L)</label><input type="number" id="l2g-off" inputmode="decimal" placeholder="0.000" step="any"></div>
               </div>
             </div>
             <div class="keypad-grid-2">
@@ -1511,6 +1518,11 @@
             }
 
             setStatus(res.syncedCount > 0 ? `SYNCED (${res.syncedCount})` : `BM SYNC ${res.serverTime || ''}`);
+
+            // หากมีรายการถูกเพิ่มเข้าคิวระหว่างกำลังซิงก์ ให้ซิงก์รอบถัดไปต่อทันที
+            if (logQueue.length > 0 && navigator.onLine) {
+              syncOfflineLogs(true);
+            }
           })
           .catch(() => {
             isSyncing = false;
@@ -1704,7 +1716,6 @@
         const desRad = desAzDeg * (Math.PI / 180);
         const dCh = dN * Math.cos(desRad) + dE * Math.sin(desRad);
         const offset = -dN * Math.sin(desRad) + dE * Math.cos(desRad);
-        
 
         document.getElementById('dev-err').innerText = err.toFixed(3) + ' m';
         document.getElementById('dev-ch').innerText = formatSigned(dCh, 3) + ' m';
@@ -1791,7 +1802,6 @@
         const ch = dN * Math.cos(azRad) + dE * Math.sin(azRad);
         const offset = -dN * Math.sin(azRad) + dE * Math.cos(azRad);
 
-        
         document.getElementById('g2l-ch').innerText = formatSigned(ch, 3) + ' m';
         document.getElementById('g2l-off').innerText = formatSigned(offset, 3) + ' m';
         document.getElementById('g2l-axis-az').innerText = 'AZ: ' + formatDMS(azDeg, 1);
