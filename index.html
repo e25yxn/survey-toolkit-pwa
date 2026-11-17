@@ -3,10 +3,13 @@
   <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <base target="_top">
+    <title>SURVEY_TOOLKIT OS v2.1</title>
     <meta name="theme-color" content="#000000">
+    <meta name="mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black">
-    <title>SURVEY_APPS.SYS</title>
+    <meta name="apple-mobile-web-app-title" content="SURVEY_OS">
     <link rel="manifest" href="./manifest.json">
     <link rel="icon" type="image/svg+xml" href="./icon.svg">
     <link rel="apple-touch-icon" href="./icon.svg">
@@ -21,9 +24,16 @@
         --font-lcd: 'Ubuntu Mono', monospace;
         --font-thai: 'IBM Plex Sans Thai', sans-serif;
       }
-      * { box-sizing: border-box; font-weight: 400; }
+
+      * {
+        box-sizing: border-box;
+        font-weight: 400;
+      }
+
       body {
-        margin: 0; padding: 0; min-height: 100dvh;
+        margin: 0;
+        padding: 0;
+        min-height: 100dvh;
         background-color: var(--bg-black);
         background-image: 
           linear-gradient(45deg, #fff 25%, transparent 25%), 
@@ -32,111 +42,547 @@
           linear-gradient(-45deg, transparent 75%, #fff 75%);
         background-size: 2px 2px;
         background-position: 0 0, 0 1px, 1px -1px, -1px 0px;
-        font-family: var(--font-term); color: var(--ink-white);
-        display: flex; flex-direction: column;
+        font-family: var(--font-term);
+        color: var(--ink-white);
+        display: flex;
+        flex-direction: column;
       }
+
+      /* Top Menu Bar */
       .menu-bar {
-        background: var(--bg-black); border-bottom: 1.5px solid var(--ink-white);
-        height: 28px; padding: 0 8px; display: flex; justify-content: space-between;
-        align-items: center; font-size: 13px; position: sticky; top: 0; z-index: 100; user-select: none;
+        background: var(--bg-black);
+        border-bottom: 1.5px solid var(--ink-white);
+        height: 28px;
+        padding: 0 8px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        font-size: 14px;
+        position: sticky;
+        top: 0;
+        z-index: 100;
+        user-select: none;
       }
-      .menu-left { display: flex; align-items: center; gap: 6px; }
+
+      .menu-left {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+      }
+
       .sys-logo {
-        display: inline-flex; align-items: center; justify-content: center;
-        width: 18px; height: 18px; border: 1.5px solid var(--ink-white); font-size: 13px; cursor: pointer;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 18px;
+        height: 18px;
+        border: 1.5px solid var(--ink-white);
+        font-size: 13px;
+        cursor: pointer;
       }
-      .menu-item { cursor: pointer; padding: 1px 4px; }
-      .menu-item:active, .menu-item:hover { background: var(--ink-white); color: var(--bg-black); }
-      .menu-item.has-queue { background: var(--ink-white); color: var(--bg-black); }
-      .desktop-area { flex: 1; display: flex; flex-direction: column; align-items: center; padding: 8px; }
-      .window { width: 100%; max-width: 400px; background: var(--bg-black); border: 2px solid var(--ink-white); box-shadow: 3px 3px 0px var(--ink-white); }
-      .title-bar { background: var(--ink-white); color: var(--bg-black); padding: 4px 8px; display: flex; justify-content: space-between; align-items: center; font-size: 15px; }
-      .win-gadget { width: 18px; height: 18px; border: 1.5px solid var(--bg-black); display: inline-flex; align-items: center; justify-content: center; font-size: 12px; cursor: pointer; user-select: none; }
-      .win-gadget:active { background: var(--bg-black); color: var(--ink-white); }
-      .sub-bar { border-bottom: 1.5px solid var(--ink-white); padding: 4px 8px; font-size: 13px; display: flex; justify-content: space-between; align-items: center; }
-      .nav-home-link { cursor: pointer; text-decoration: underline; }
-      .window-body { padding: 10px; }
-      .login-box { padding: 6px 2px; }
-      .login-banner { border: 1.5px dashed var(--ink-white); padding: 8px; margin-bottom: 12px; font-size: 13px; line-height: 1.4; }
-      .login-error { border: 1.5px solid var(--ink-white); background: var(--ink-white); color: var(--bg-black); padding: 6px 8px; margin-bottom: 10px; font-family: var(--font-thai); font-size: 13px; display: none; }
-      .app-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; }
+
+      .menu-item {
+        cursor: pointer;
+        padding: 1px 4px;
+      }
+
+      .menu-item:active,
+      .menu-item:hover {
+        background: var(--ink-white);
+        color: var(--bg-black);
+      }
+
+      /* Main Window Container */
+      .desktop-area {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        padding: 8px;
+      }
+
+      .window {
+        width: 100%;
+        max-width: 400px;
+        background: var(--bg-black);
+        border: 2px solid var(--ink-white);
+        box-shadow: 3px 3px 0px var(--ink-white);
+      }
+
+      .title-bar {
+        background: var(--ink-white);
+        color: var(--bg-black);
+        padding: 4px 8px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        font-size: 15px;
+      }
+
+      .win-gadget {
+        width: 18px;
+        height: 18px;
+        border: 1.5px solid var(--bg-black);
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 12px;
+        cursor: pointer;
+        user-select: none;
+      }
+
+      .win-gadget:active {
+        background: var(--bg-black);
+        color: var(--ink-white);
+      }
+
+      .sub-bar {
+        border-bottom: 1.5px solid var(--ink-white);
+        padding: 4px 8px;
+        font-size: 13px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+
+      .nav-home-link {
+        cursor: pointer;
+        text-decoration: underline;
+      }
+
+      .window-body {
+        padding: 10px;
+      }
+
+      /* Login Screen */
+      .login-box {
+        padding: 4px 2px;
+      }
+
+      .login-banner {
+        border: 1.5px dashed var(--ink-white);
+        padding: 8px;
+        margin-bottom: 12px;
+        font-size: 13px;
+        line-height: 1.4;
+      }
+
+      .login-error {
+        border: 1.5px solid var(--ink-white);
+        background: var(--ink-white);
+        color: var(--bg-black);
+        padding: 6px 8px;
+        margin-bottom: 10px;
+        font-family: var(--font-thai);
+        font-size: 13px;
+        display: none;
+      }
+
+      /* Home Grid */
+      .app-grid {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 10px;
+      }
+
       .app-tile {
-        border: 1.5px solid var(--ink-white); background: var(--bg-black); color: var(--ink-white);
-        padding: 12px 8px; display: flex; flex-direction: column; align-items: center; justify-content: center;
-        text-align: center; cursor: pointer; user-select: none; touch-action: manipulation; box-shadow: 2px 2px 0px var(--ink-white); min-height: 102px;
+        border: 1.5px solid var(--ink-white);
+        background: var(--bg-black);
+        color: var(--ink-white);
+        padding: 12px 8px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+        cursor: pointer;
+        user-select: none;
+        touch-action: manipulation;
+        box-shadow: 2px 2px 0px var(--ink-white);
+        min-height: 102px;
       }
-      .app-tile:active { transform: translate(2px, 2px); box-shadow: none; background: var(--ink-white); color: var(--bg-black); }
-      .tile-icon { width: 32px; height: 32px; margin-bottom: 6px; display: flex; align-items: center; justify-content: center; }
-      .tile-code { font-size: 15px; }
-      .tile-thai { font-family: var(--font-thai); font-size: 12px; margin-top: 2px; }
-      .view-section { display: none; }
-      .view-section.active { display: block; }
-      .calc-screen { border: 1.5px solid var(--ink-white); border-radius: 5px; background: var(--bg-black); color: var(--ink-white); padding: 7px 9px; margin-bottom: 10px; display: flex; flex-direction: column; gap: 3px; }
-      .screen-header { display: flex; justify-content: space-between; font-size: 11px; border-bottom: 1px dashed var(--ink-white); padding-bottom: 2px; margin-bottom: 2px; }
-      .readout-row { display: flex; justify-content: space-between; align-items: baseline; }
-      .readout-label { font-size: 13px; }
-      .readout-thai { font-family: var(--font-thai); font-size: 11px; }
-      .readout-val { font-family: var(--font-lcd); font-size: 21px; line-height: 1.1; }
-      .readout-sub { display: flex; justify-content: space-between; font-family: var(--font-lcd); font-size: 13.5px; margin-top: 2px; padding-top: 3px; border-top: 1px solid var(--ink-white); }
-      .badge-status { border: 1px solid var(--ink-white); padding: 0 5px; font-size: 11px; }
-      .badge-invert { background: var(--ink-white); color: var(--bg-black); }
-      .point-group { border: 1.5px solid var(--ink-white); padding: 9px 8px 7px 8px; margin-bottom: 9px; position: relative; }
-      .point-title { font-size: 12px; background: var(--bg-black); color: var(--ink-white); padding: 0 5px; position: absolute; top: -9px; left: 7px; }
-      .bm-pick-btn { position: absolute; top: -9px; right: 7px; background: var(--bg-black); color: var(--ink-white); border: 1px solid var(--ink-white); padding: 0 5px; font-size: 11px; cursor: pointer; user-select: none; }
-      .bm-pick-btn:active { background: var(--ink-white); color: var(--bg-black); }
-      .mode-switch-wrap { position: absolute; top: -9px; right: 7px; display: flex; background: var(--bg-black); border: 1px solid var(--ink-white); }
-      .mode-tab { padding: 0 5px; font-size: 10.5px; cursor: pointer; user-select: none; color: var(--ink-white); background: var(--bg-black); }
-      .mode-tab.active { background: var(--ink-white); color: var(--bg-black); }
-      .thai-hint { font-family: var(--font-thai); font-size: 11px; }
-      .input-grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; margin-top: 2px; }
-      .input-grid-3 { display: grid; grid-template-columns: 1fr 1fr 1.2fr; gap: 6px; margin-top: 2px; }
-      .field-wrap label { display: block; font-size: 11px; margin-bottom: 2px; }
-      input[type="number"], input[type="text"], input[type="password"], input[type="url"] {
-        width: 100%; height: 36px; padding: 4px 6px; border: 1.5px solid var(--ink-white);
-        border-radius: 0; background: var(--bg-black); color: var(--ink-white); font-family: var(--font-lcd); font-size: 17px; outline: none;
+
+      .app-tile:active {
+        transform: translate(2px, 2px);
+        box-shadow: none;
+        background: var(--ink-white);
+        color: var(--bg-black);
       }
-      input[type="url"] { font-size: 13px; }
-      input:focus { background: var(--ink-white); color: var(--bg-black); }
-      input::placeholder { color: #666666; font-size: 14px; }
-      .sub-divider-label { font-size: 11px; margin-top: 6px; margin-bottom: 2px; border-top: 1px dashed #666666; padding-top: 4px; display: flex; justify-content: space-between; align-items: center; }
-      .inline-bm-btn { border: 1px solid var(--ink-white); padding: 0 4px; font-size: 10.5px; cursor: pointer; user-select: none; }
-      .inline-bm-btn:active { background: var(--ink-white); color: var(--bg-black); }
-      .keypad-grid { display: grid; grid-template-columns: 1fr 1fr 1.8fr; gap: 7px; margin-top: 4px; }
-      .keypad-grid-2 { display: grid; grid-template-columns: 1fr 2fr; gap: 7px; margin-top: 4px; }
-      .action-bar-log { display: grid; grid-template-columns: 1fr 1fr; gap: 7px; margin-top: 7px; }
-      .action-bar-log.single { grid-template-columns: 1fr; }
+
+      .tile-icon {
+        width: 32px;
+        height: 32px;
+        margin-bottom: 6px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .tile-code {
+        font-size: 15px;
+      }
+
+      .tile-thai {
+        font-family: var(--font-thai);
+        font-size: 12px;
+        margin-top: 2px;
+      }
+
+      /* Module Views */
+      .view-section {
+        display: none;
+      }
+
+      .view-section.active {
+        display: block;
+      }
+
+      .calc-screen {
+        border: 1.5px solid var(--ink-white);
+        border-radius: 5px;
+        background: var(--bg-black);
+        color: var(--ink-white);
+        padding: 7px 9px;
+        margin-bottom: 10px;
+        display: flex;
+        flex-direction: column;
+        gap: 3px;
+      }
+
+      .screen-header {
+        display: flex;
+        justify-content: space-between;
+        font-size: 11px;
+        border-bottom: 1px dashed var(--ink-white);
+        padding-bottom: 2px;
+        margin-bottom: 2px;
+      }
+
+      .readout-row {
+        display: flex;
+        justify-content: space-between;
+        align-items: baseline;
+      }
+
+      .readout-label {
+        font-size: 13px;
+      }
+
+      .readout-thai {
+        font-family: var(--font-thai);
+        font-size: 11px;
+      }
+
+      .readout-val {
+        font-family: var(--font-lcd);
+        font-size: 21px;
+        line-height: 1.1;
+      }
+
+      .readout-sub {
+        display: flex;
+        justify-content: space-between;
+        font-family: var(--font-lcd);
+        font-size: 13.5px;
+        margin-top: 2px;
+        padding-top: 3px;
+        border-top: 1px solid var(--ink-white);
+      }
+
+      .badge-status {
+        border: 1px solid var(--ink-white);
+        padding: 0 5px;
+        font-size: 11px;
+      }
+
+      .badge-invert {
+        background: var(--ink-white);
+        color: var(--bg-black);
+      }
+
+      /* Form Groups & Inputs */
+      .point-group {
+        border: 1.5px solid var(--ink-white);
+        padding: 9px 8px 7px 8px;
+        margin-bottom: 9px;
+        position: relative;
+      }
+
+      .point-title {
+        font-size: 12px;
+        background: var(--bg-black);
+        color: var(--ink-white);
+        padding: 0 5px;
+        position: absolute;
+        top: -9px;
+        left: 7px;
+      }
+
+      .bm-pick-btn {
+        position: absolute;
+        top: -9px;
+        right: 7px;
+        background: var(--bg-black);
+        color: var(--ink-white);
+        border: 1px solid var(--ink-white);
+        padding: 0 5px;
+        font-size: 11px;
+        cursor: pointer;
+        user-select: none;
+      }
+
+      .bm-pick-btn:active {
+        background: var(--ink-white);
+        color: var(--bg-black);
+      }
+
+      .mode-switch-wrap {
+        position: absolute;
+        top: -9px;
+        right: 7px;
+        display: flex;
+        background: var(--bg-black);
+        border: 1px solid var(--ink-white);
+      }
+
+      .mode-tab {
+        padding: 0 5px;
+        font-size: 10.5px;
+        cursor: pointer;
+        user-select: none;
+        color: var(--ink-white);
+        background: var(--bg-black);
+      }
+
+      .mode-tab.active {
+        background: var(--ink-white);
+        color: var(--bg-black);
+      }
+
+      .thai-hint {
+        font-family: var(--font-thai);
+        font-size: 11px;
+      }
+
+      .input-grid-2 {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 6px;
+        margin-top: 2px;
+      }
+
+      .input-grid-3 {
+        display: grid;
+        grid-template-columns: 1fr 1fr 1.2fr;
+        gap: 6px;
+        margin-top: 2px;
+      }
+
+      .field-wrap label {
+        display: block;
+        font-size: 11px;
+        margin-bottom: 2px;
+      }
+
+      input[type="number"],
+      input[type="text"],
+      input[type="password"] {
+        width: 100%;
+        height: 36px;
+        padding: 4px 6px;
+        border: 1.5px solid var(--ink-white);
+        border-radius: 0;
+        background: var(--bg-black);
+        color: var(--ink-white);
+        font-family: var(--font-lcd);
+        font-size: 17px;
+        outline: none;
+      }
+
+      input:focus {
+        background: var(--ink-white);
+        color: var(--bg-black);
+      }
+
+      input::placeholder {
+        color: #666666;
+        font-size: 15px;
+      }
+
+      /* สไตล์สำหรับช่องที่ถูกล็อก (Read-only สำหรับทีมงานทั่วไป) */
+      input[readonly] {
+        border-style: dashed;
+        opacity: 0.75;
+        cursor: not-allowed;
+        font-size: 13px;
+      }
+
+      input[readonly]:focus {
+        background: var(--bg-black);
+        color: var(--ink-white);
+      }
+
+      .sub-divider-label {
+        font-size: 11px;
+        margin-top: 6px;
+        margin-bottom: 2px;
+        border-top: 1px dashed #666666;
+        padding-top: 4px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+
+      .inline-bm-btn {
+        border: 1px solid var(--ink-white);
+        padding: 0 4px;
+        font-size: 10.5px;
+        cursor: pointer;
+        user-select: none;
+      }
+
+      .inline-bm-btn:active {
+        background: var(--ink-white);
+        color: var(--bg-black);
+      }
+
+      /* Buttons */
+      .keypad-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr 1.8fr;
+        gap: 7px;
+        margin-top: 4px;
+      }
+
+      .keypad-grid-2 {
+        display: grid;
+        grid-template-columns: 1fr 2fr;
+        gap: 7px;
+        margin-top: 4px;
+      }
+
+      .action-bar-log {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 7px;
+        margin-top: 7px;
+      }
+
+      .action-bar-log.single {
+        grid-template-columns: 1fr;
+      }
+
       .retro-btn {
-        min-height: 40px; background: var(--bg-black); color: var(--ink-white); border: 1.5px solid var(--ink-white);
-        border-radius: 6px; box-shadow: 2px 2px 0px var(--ink-white); padding: 6px 4px; font-family: var(--font-term);
-        font-size: 15px; cursor: pointer; text-align: center; user-select: none; touch-action: manipulation;
+        min-height: 40px;
+        background: var(--bg-black);
+        color: var(--ink-white);
+        border: 1.5px solid var(--ink-white);
+        border-radius: 6px;
+        box-shadow: 2px 2px 0px var(--ink-white);
+        padding: 6px 4px;
+        font-family: var(--font-term);
+        font-size: 15px;
+        cursor: pointer;
+        text-align: center;
+        user-select: none;
+        touch-action: manipulation;
       }
-      .retro-btn:active { transform: translate(2px, 2px); box-shadow: none; background: var(--ink-white); color: var(--bg-black); }
-      .btn-primary { background: var(--ink-white); color: var(--bg-black); }
-      .btn-primary:active { background: var(--bg-black); color: var(--ink-white); }
-      .window-footer { border-top: 1.5px solid var(--ink-white); padding: 4px 8px; font-size: 12px; display: flex; justify-content: space-between; align-items: center; }
-      .modal-overlay { position: fixed; inset: 0; background: rgba(0, 0, 0, 0.85); display: none; justify-content: center; align-items: center; padding: 12px; z-index: 200; }
-      .modal-overlay.open { display: flex; }
-      .modal-win { width: 100%; max-width: 380px; background: var(--bg-black); border: 2px solid var(--ink-white); box-shadow: 4px 4px 0px var(--ink-white); }
-      .bm-list { max-height: 260px; overflow-y: auto; border: 1.5px solid var(--ink-white); margin-top: 8px; }
-      .bm-item { padding: 8px; border-bottom: 1px dashed var(--ink-white); cursor: pointer; font-size: 13px; }
-      .bm-item:last-child { border-bottom: none; }
-      .bm-item:active, .bm-item:hover { background: var(--ink-white); color: var(--bg-black); }
-      .bm-item-desc { font-family: var(--font-thai); font-size: 11px; opacity: 0.85; }
+
+      .retro-btn:active {
+        transform: translate(2px, 2px);
+        box-shadow: none;
+        background: var(--ink-white);
+        color: var(--bg-black);
+      }
+
+      .btn-primary {
+        background: var(--ink-white);
+        color: var(--bg-black);
+      }
+
+      .btn-primary:active {
+        background: var(--bg-black);
+        color: var(--ink-white);
+      }
+
+      .window-footer {
+        border-top: 1.5px solid var(--ink-white);
+        padding: 4px 8px;
+        font-size: 12px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+
+      /* BM Picker Modal */
+      .modal-overlay {
+        position: fixed;
+        inset: 0;
+        background: rgba(0, 0, 0, 0.85);
+        display: none;
+        justify-content: center;
+        align-items: center;
+        padding: 12px;
+        z-index: 200;
+      }
+
+      .modal-overlay.open {
+        display: flex;
+      }
+
+      .modal-win {
+        width: 100%;
+        max-width: 380px;
+        background: var(--bg-black);
+        border: 2px solid var(--ink-white);
+        box-shadow: 4px 4px 0px var(--ink-white);
+      }
+
+      .bm-list {
+        max-height: 260px;
+        overflow-y: auto;
+        border: 1.5px solid var(--ink-white);
+        margin-top: 8px;
+      }
+
+      .bm-item {
+        padding: 8px;
+        border-bottom: 1px dashed var(--ink-white);
+        cursor: pointer;
+        font-size: 13px;
+      }
+
+      .bm-item:last-child {
+        border-bottom: none;
+      }
+
+      .bm-item:active,
+      .bm-item:hover {
+        background: var(--ink-white);
+        color: var(--bg-black);
+      }
+
+      .bm-item-desc {
+        font-family: var(--font-thai);
+        font-size: 11px;
+        opacity: 0.85;
+      }
     </style>
   </head>
   <body>
 
+    <!-- Top Menu Bar -->
     <div class="menu-bar">
       <div class="menu-left">
         <span class="sys-logo" onclick="goHome()" title="Home">S</span>
         <span class="menu-item" id="menuHomeBtn" style="display:none;" onclick="goHome()">[HOME]</span>
-        <span class="menu-item" id="menuSyncBtn" style="display:none;" onclick="syncNow(false)">[SYNC]</span>
         <span class="menu-item" id="menuDbBtn" style="display:none;" onclick="openDbSheet()">[DB]</span>
         <span class="menu-item" id="menuLogoutBtn" style="display:none;" onclick="doLogout()">[OUT]</span>
       </div>
-      <div class="menu-clock" id="sysClock">OFFLINE</div>
+      <div class="menu-clock" id="sysClock">11/17/26 19:00</div>
     </div>
 
+    <!-- Desktop / Window -->
     <div class="desktop-area">
       <div class="window">
         <div class="title-bar">
@@ -150,23 +596,20 @@
         </div>
 
         <div class="window-body">
-          <!-- LOGIN SCREEN -->
+          <!-- ==========================================
+               LOGIN SCREEN
+               ========================================== -->
           <div id="view-login" class="view-section active">
             <div class="login-box">
               <div class="login-banner">
-                SURVEY_TOOLKIT OS v2.2 [PWA]<br>
-                <span class="thai-hint">ทำงานออฟไลน์ 100% + ซิงค์ข้อมูลเข้า Google Sheets</span>
+                SURVEY_TOOLKIT OS v2.1<br>
+                <span class="thai-hint">กรุณายืนยันตัวตนเพื่อเข้าใช้งานระบบสำรวจ</span>
               </div>
               <div id="loginErrorBox" class="login-error"></div>
+
               <div class="point-group">
-                <span class="point-title">SERVER &amp; CREDENTIALS</span>
+                <span class="point-title">USER CREDENTIALS</span>
                 <div style="margin-top: 4px; margin-bottom: 8px;">
-                  <div class="field-wrap">
-                    <label>GAS WEB APP URL <span class="thai-hint">(วางครั้งเดียว ระบบจำอัตโนมัติ)</span></label>
-                    <input type="url" id="login-api" placeholder="https://script.google.com/macros/s/.../exec">
-                  </div>
-                </div>
-                <div style="margin-bottom: 8px;">
                   <div class="field-wrap">
                     <label>USERNAME</label>
                     <input type="text" id="login-user" autocapitalize="none" autocomplete="username" placeholder="username">
@@ -179,17 +622,35 @@
                   </div>
                 </div>
               </div>
-              <button class="retro-btn btn-primary" style="width: 100%; margin-top: 4px;" onclick="doLogin()">= LOGIN &amp; SYNC</button>
+
+              <div class="point-group" id="login-gas-group">
+                <span class="point-title">SERVER CONNECTION</span>
+                <div class="field-wrap" style="margin-top: 2px;">
+                  <label>
+                    GAS WEB APP URL 
+                    <span class="thai-hint" id="login-gas-hint">(วางครั้งเดียว ระบบจำอัตโนมัติ)</span>
+                  </label>
+                  <input 
+                    type="text" 
+                    id="login-gas-url" 
+                    placeholder="https://script.google.com/macros/s/.../exec" 
+                    oninput="handleGasUrlInput(this.value)">
+                </div>
+              </div>
+
+              <button class="retro-btn btn-primary" style="width: 100%; margin-top: 2px;" onclick="doLogin()">= LOGIN TO SYSTEM</button>
             </div>
           </div>
 
-          <!-- HOME SCREEN -->
+          <!-- ==========================================
+               HOME SCREEN
+               ========================================== -->
           <div id="view-home" class="view-section">
             <div class="app-grid">
               <div class="app-tile" onclick="openApp('inverse')">
                 <div class="tile-icon"><svg width="30" height="30" viewBox="0 0 16 16" fill="currentColor"><path d="M2 12h3v3H2v-3zm9-11h3v3h-3V1zM5 11l6-6 1 1-6 6-1-1z"/></svg></div>
                 <div class="tile-code">01 INVERSE</div>
-                <div class="tile-thai">ระยะ &amp; อะซิมุท</div>
+                <div class="tile-thai">ระยะ & อะซิมุท</div>
               </div>
               <div class="app-tile" onclick="openApp('polar')">
                 <div class="tile-icon"><svg width="30" height="30" viewBox="0 0 16 16" fill="currentColor"><path d="M2 13h2v2H2v-2zm2-2l7-7V2h3v3h-2l-7 7-1-1zm5-8h2v2H9V3z"/></svg></div>
@@ -199,17 +660,17 @@
               <div class="app-tile" onclick="openApp('dev')">
                 <div class="tile-icon"><svg width="30" height="30" viewBox="0 0 16 16" fill="currentColor"><path d="M7 1h2v5H7V1zm0 9h2v5H7v-5zM1 7h5v2H1V7zm9 0h5v2h-5V7zM7 7h2v2H7V7z"/></svg></div>
                 <div class="tile-code">03 DEV CHECK</div>
-                <div class="tile-thai">เช็คพิกัด / CH &amp; Offset</div>
+                <div class="tile-thai">เช็คพิกัด / CH & Offset</div>
               </div>
               <div class="app-tile" onclick="openApp('g2l')">
-                <div class="tile-icon"><svg width="30" height="30" viewBox="0 0 16 16" fill="currentColor"><path d="M1 2h6v6H1V2zm2 2v2h2V4H3zm6 5h6v6H9V9zm2 2v2h2v-2H3zM8 4h4v3h-2V6H8V4z"/></svg></div>
-                <div class="tile-code">04 GLO -&gt; LOC</div>
-                <div class="tile-thai">แปลง Global-&gt;Local</div>
+                <div class="tile-icon"><svg width="30" height="30" viewBox="0 0 16 16" fill="currentColor"><path d="M1 2h6v6H1V2zm2 2v2h2V4H3zm6 5h6v6H9V9zm2 2v2h2v-2h-2zM8 4h4v3h-2V6H8V4z"/></svg></div>
+                <div class="tile-code">04 GLO -> LOC</div>
+                <div class="tile-thai">แปลง Global->Local</div>
               </div>
               <div class="app-tile" onclick="openApp('l2g')">
                 <div class="tile-icon"><svg width="30" height="30" viewBox="0 0 16 16" fill="currentColor"><path d="M9 2h6v6H9V2zm2 2v2h2V4h-2zM1 9h6v6H1V9zm2 2v2h2v-2H3zm1-5h4v2H6v2H4V6z"/></svg></div>
-                <div class="tile-code">05 LOC -&gt; GLO</div>
-                <div class="tile-thai">แปลง Local-&gt;Global</div>
+                <div class="tile-code">05 LOC -> GLO</div>
+                <div class="tile-thai">แปลง Local->Global</div>
               </div>
               <div class="app-tile" onclick="openApp('setout')">
                 <div class="tile-icon"><svg width="30" height="30" viewBox="0 0 16 16" fill="currentColor"><path d="M7 1h2v3H7V1zM3 13l4-7h2l4 7h-2l-3-5.2L5 13H3zm4-2h2v4H7v-4z"/></svg></div>
@@ -217,14 +678,32 @@
                 <div class="tile-thai">วางผัง มุมราบ/ระยะ</div>
               </div>
             </div>
+
+            <!-- กล่องจัดการ GAS URL และแชร์ลิงก์ให้ทีมงาน (แสดงเฉพาะ ADMIN เท่านั้น) -->
+            <div class="point-group admin-only" style="margin-top: 12px; margin-bottom: 2px; display: none;">
+              <span class="point-title">ADMIN: GAS WEB APP URL</span>
+              <div class="field-wrap" style="margin-top: 2px;">
+                <label>URL <span class="thai-hint">(แก้ไขได้เฉพาะ Admin)</span></label>
+                <input 
+                  type="text" 
+                  id="admin-gas-url" 
+                  placeholder="https://script.google.com/macros/s/.../exec" 
+                  oninput="handleGasUrlInput(this.value)">
+              </div>
+              <button type="button" class="retro-btn" style="width: 100%; margin-top: 6px; font-size: 13.5px;" onclick="copyTeamShareLink()">
+                [COPY LINK FOR TEAM]
+              </button>
+            </div>
           </div>
 
-          <!-- 01 INVERSE -->
+          <!-- ==========================================
+               01 INVERSE
+               ========================================== -->
           <div id="view-inverse" class="view-section">
             <div class="calc-screen">
               <div class="screen-header"><span>INVERSE OUTPUT</span><span>METER / DMS</span></div>
               <div class="readout-row"><span class="readout-label">DIST <span class="readout-thai">(ระยะราบ)</span>:</span><span class="readout-val" id="inv-dist">0.000 m</span></div>
-              <div class="readout-row"><span class="readout-label">AZIM <span class="readout-thai">(อะซิมุท N=0°)</span>:</span><span class="readout-val" id="inv-az">0° 00' 00.0"</span></div>
+              <div class="readout-row"><span class="readout-label">AZIM <span class="readout-thai">(อะซิมุท)</span>:</span><span class="readout-val" id="inv-az">0° 00' 00.0"</span></div>
               <div class="readout-sub"><span>ΔN: <span id="inv-dn">0.000</span></span><span>ΔE: <span id="inv-de">0.000</span></span></div>
             </div>
             <div class="point-group">
@@ -248,10 +727,12 @@
               <button class="retro-btn" onclick="swapInverse()">SWAP</button>
               <button class="retro-btn btn-primary" onclick="calcInverse()">= CALC</button>
             </div>
-            <div class="action-bar-log single"><button class="retro-btn" onclick="logInverse()">SAVE LOG (AUTO SYNC)</button></div>
+            <div class="action-bar-log single"><button class="retro-btn" onclick="logInverse()">SAVE LOG TO SHEET</button></div>
           </div>
 
-          <!-- 02 POLAR -->
+          <!-- ==========================================
+               02 POLAR
+               ========================================== -->
           <div id="view-polar" class="view-section">
             <div class="calc-screen">
               <div class="screen-header"><span>TARGET COORDINATE</span><span>METER</span></div>
@@ -268,7 +749,7 @@
               </div>
             </div>
             <div class="point-group">
-              <span class="point-title">AZIMUTH &amp; DIST <span class="thai-hint">(มุมอะซิมุท N=0° &amp; ระยะ)</span></span>
+              <span class="point-title">AZIMUTH & DIST <span class="thai-hint">(มุมอะซิมุท & ระยะ)</span></span>
               <div class="input-grid-3">
                 <div class="field-wrap"><label>DEG (°)</label><input type="number" id="pol-deg" inputmode="decimal" placeholder="0" step="any"></div>
                 <div class="field-wrap"><label>MIN (')</label><input type="number" id="pol-min" inputmode="decimal" placeholder="0" step="any"></div>
@@ -288,23 +769,25 @@
             </div>
           </div>
 
-          <!-- 03 DEV CHECK -->
+          <!-- ==========================================
+               03 DEV CHECK
+               ========================================== -->
           <div id="view-dev" class="view-section">
             <div class="calc-screen">
               <div class="screen-header"><span>DEVIATION CHECK</span><span class="badge-status" id="dev-badge">WAIT</span></div>
               <div class="readout-row"><span class="readout-label">ERROR <span class="readout-thai">(คลาดเคลื่อน)</span>:</span><span class="readout-val" id="dev-err">0.000 m</span></div>
-              <div class="readout-row"><span class="readout-label">CHAINAGE <span class="readout-thai">(ตามแนว Y)</span>:</span><span class="readout-val" id="dev-ch">0.000 m</span></div>
+              <div class="readout-row"><span class="readout-label">CH <span class="readout-thai">(ตามแนว)</span>:</span><span class="readout-val" id="dev-ch">0.000 m</span></div>
               <div class="readout-row"><span class="readout-label">OFFSET <span class="readout-thai">(ขวา+/ซ้าย-)</span>:</span><span class="readout-val" id="dev-off">0.000 m</span></div>
               <div class="readout-sub"><span>ΔN:<span id="dev-dn">0.000</span></span><span>ΔE:<span id="dev-de">0.000</span></span><span>DIR:<span id="dev-az">0°</span></span></div>
             </div>
             <div class="point-group">
-              <span class="point-title">DESIGN <span class="thai-hint">(พิกัด &amp; แนวเส้นทาง Y)</span></span>
+              <span class="point-title">DESIGN <span class="thai-hint">(พิกัด & ทิศทางตามแบบ)</span></span>
               <span class="bm-pick-btn" onclick="openBmPicker('dev-nd','dev-ed')">[BM]</span>
               <div class="input-grid-2">
                 <div class="field-wrap"><label>NORTH (Nd)</label><input type="number" id="dev-nd" inputmode="decimal" placeholder="0.000" step="any"></div>
                 <div class="field-wrap"><label>EAST (Ed)</label><input type="number" id="dev-ed" inputmode="decimal" placeholder="0.000" step="any"></div>
               </div>
-              <div class="sub-divider-label"><span>ALIGNMENT AZIMUTH <span class="thai-hint">(เว้นว่าง = 0° ทิศเหนือ)</span></span></div>
+              <div class="sub-divider-label"><span>DESIGN AZIMUTH <span class="thai-hint">(เว้นว่าง = 0° 00' 00.0")</span></span></div>
               <div class="input-grid-3">
                 <div class="field-wrap"><label>DEG (°)</label><input type="number" id="dev-deg" inputmode="decimal" placeholder="0" step="any"></div>
                 <div class="field-wrap"><label>MIN (')</label><input type="number" id="dev-min" inputmode="decimal" placeholder="0" step="any"></div>
@@ -326,18 +809,20 @@
               <button class="retro-btn" onclick="clearDev()">CLR</button>
               <button class="retro-btn btn-primary" onclick="calcDev()">= CHECK</button>
             </div>
-            <div class="action-bar-log single"><button class="retro-btn" onclick="logDev()">SAVE LOG (AUTO SYNC)</button></div>
+            <div class="action-bar-log single"><button class="retro-btn" onclick="logDev()">SAVE LOG TO SHEET</button></div>
           </div>
 
-          <!-- 04 GLO -> LOC -->
+          <!-- ==========================================
+               04 GLO -> LOC
+               ========================================== -->
           <div id="view-g2l" class="view-section">
             <div class="calc-screen">
-              <div class="screen-header"><span>ALIGNMENT TRANSFORMATION</span><span id="g2l-axis-az">AZ: 0° 00' 00.0"</span></div>
-              <div class="readout-row"><span class="readout-label">CHAINAGE <span class="readout-thai">(ตามแนว Y)</span>:</span><span class="readout-val" id="g2l-ch">0.000 m</span></div>
-              <div class="readout-row"><span class="readout-label">OFFSET <span class="readout-thai">(ขวา+/ซ้าย-)</span>:</span><span class="readout-val" id="g2l-off">0.000 m</span></div>
+              <div class="screen-header"><span>LOCAL (+X AXIS, +Y LEFT)</span><span id="g2l-axis-az">AZ: 0° 00' 00.0"</span></div>
+              <div class="readout-row"><span class="readout-label">LOCAL X <span class="readout-thai">(ตามแนว)</span>:</span><span class="readout-val" id="g2l-lx">0.000</span></div>
+              <div class="readout-row"><span class="readout-label">LOCAL Y <span class="readout-thai">(ซ้าย+)</span>:</span><span class="readout-val" id="g2l-ly">0.000</span></div>
             </div>
             <div class="point-group">
-              <span class="point-title">ORIGIN (0,0) <span class="thai-hint">(จุดเริ่มต้น Alignment)</span></span>
+              <span class="point-title">ORIGIN (0,0) <span class="thai-hint">(จุดตั้งต้น Global)</span></span>
               <span class="bm-pick-btn" onclick="openBmPicker('g2l-n0','g2l-e0', () => syncTransRef('g2l'))">[BM]</span>
               <div class="input-grid-2">
                 <div class="field-wrap"><label>ORIGIN N0</label><input type="number" id="g2l-n0" inputmode="decimal" placeholder="0.000" step="any" oninput="syncTransRef('g2l')"></div>
@@ -345,23 +830,23 @@
               </div>
             </div>
             <div class="point-group">
-              <span class="point-title">ALIGNMENT DIRECTION (+Y AXIS)</span>
+              <span class="point-title">BACKSIGHT / +X REF</span>
               <div class="mode-switch-wrap">
                 <span class="mode-tab active" id="g2l-tab-coord" onclick="setTransMode('coord', true)">COORD</span>
                 <span class="mode-tab" id="g2l-tab-azim" onclick="setTransMode('azim', true)">AZIMUTH</span>
               </div>
               <div id="g2l-ref-coord">
                 <div class="sub-divider-label" style="border-top:none; margin-top:2px; padding-top:0;">
-                  <span class="thai-hint">พิกัดจุดปลายแนวแกน Y (+Y Ref)</span>
+                  <span class="thai-hint">พิกัดจุดอ้างอิงทิศทาง +X</span>
                   <span class="inline-bm-btn" onclick="openBmPicker('g2l-nr','g2l-er', () => syncTransRef('g2l'))">[BM]</span>
                 </div>
                 <div class="input-grid-2">
-                  <div class="field-wrap"><label>REF NORTH (Nref)</label><input type="number" id="g2l-nr" inputmode="decimal" placeholder="0.000" step="any" oninput="syncTransRef('g2l')"></div>
-                  <div class="field-wrap"><label>REF EAST (Eref)</label><input type="number" id="g2l-er" inputmode="decimal" placeholder="0.000" step="any" oninput="syncTransRef('g2l')"></div>
+                  <div class="field-wrap"><label>BS NORTH (Nref)</label><input type="number" id="g2l-nr" inputmode="decimal" placeholder="0.000" step="any" oninput="syncTransRef('g2l')"></div>
+                  <div class="field-wrap"><label>BS EAST (Eref)</label><input type="number" id="g2l-er" inputmode="decimal" placeholder="0.000" step="any" oninput="syncTransRef('g2l')"></div>
                 </div>
               </div>
               <div id="g2l-ref-azim" style="display:none;">
-                <div class="sub-divider-label" style="border-top:none; margin-top:2px; padding-top:0;"><span class="thai-hint">มุม Azimuth แนวแกน Y (+Y)</span></div>
+                <div class="sub-divider-label" style="border-top:none; margin-top:2px; padding-top:0;"><span class="thai-hint">มุม Azimuth อ้างอิงทิศทาง +X</span></div>
                 <div class="input-grid-3">
                   <div class="field-wrap"><label>DEG (°)</label><input type="number" id="g2l-deg" inputmode="decimal" placeholder="0" step="any" oninput="syncTransRef('g2l')"></div>
                   <div class="field-wrap"><label>MIN (')</label><input type="number" id="g2l-min" inputmode="decimal" placeholder="0" step="any" oninput="syncTransRef('g2l')"></div>
@@ -370,7 +855,7 @@
               </div>
             </div>
             <div class="point-group">
-              <span class="point-title">TARGET GLOBAL <span class="thai-hint">(พิกัดจริงที่ต้องการแปลง)</span></span>
+              <span class="point-title">TARGET GLOBAL <span class="thai-hint">(พิกัดที่ต้องการแปลง)</span></span>
               <span class="bm-pick-btn" onclick="openBmPicker('g2l-n','g2l-e')">[BM]</span>
               <div class="input-grid-2">
                 <div class="field-wrap"><label>GLOBAL N</label><input type="number" id="g2l-n" inputmode="decimal" placeholder="0.000" step="any"></div>
@@ -379,12 +864,14 @@
             </div>
             <div class="keypad-grid-2">
               <button class="retro-btn" onclick="clearG2L()">CLR TGT</button>
-              <button class="retro-btn btn-primary" onclick="calcG2L()">= TO CH/OFF</button>
+              <button class="retro-btn btn-primary" onclick="calcG2L()">= TO LOCAL</button>
             </div>
-            <div class="action-bar-log single"><button class="retro-btn" onclick="logG2L()">SAVE LOG (AUTO SYNC)</button></div>
+            <div class="action-bar-log single"><button class="retro-btn" onclick="logG2L()">SAVE LOG TO SHEET</button></div>
           </div>
 
-          <!-- 05 LOC -> GLO -->
+          <!-- ==========================================
+               05 LOC -> GLO
+               ========================================== -->
           <div id="view-l2g" class="view-section">
             <div class="calc-screen">
               <div class="screen-header"><span>GLOBAL OUTPUT</span><span id="l2g-axis-az">AZ: 0° 00' 00.0"</span></div>
@@ -392,7 +879,7 @@
               <div class="readout-row"><span class="readout-label">EAST (E):</span><span class="readout-val" id="l2g-ge">0.000</span></div>
             </div>
             <div class="point-group">
-              <span class="point-title">ORIGIN (0,0) <span class="thai-hint">(จุดเริ่มต้น Alignment)</span></span>
+              <span class="point-title">ORIGIN (0,0) <span class="thai-hint">(จุดตั้งต้น Global)</span></span>
               <span class="bm-pick-btn" onclick="openBmPicker('l2g-n0','l2g-e0', () => syncTransRef('l2g'))">[BM]</span>
               <div class="input-grid-2">
                 <div class="field-wrap"><label>ORIGIN N0</label><input type="number" id="l2g-n0" inputmode="decimal" placeholder="0.000" step="any" oninput="syncTransRef('l2g')"></div>
@@ -400,23 +887,23 @@
               </div>
             </div>
             <div class="point-group">
-              <span class="point-title">ALIGNMENT DIRECTION (+Y AXIS)</span>
+              <span class="point-title">BACKSIGHT / +X REF</span>
               <div class="mode-switch-wrap">
                 <span class="mode-tab active" id="l2g-tab-coord" onclick="setTransMode('coord', true)">COORD</span>
                 <span class="mode-tab" id="l2g-tab-azim" onclick="setTransMode('azim', true)">AZIMUTH</span>
               </div>
               <div id="l2g-ref-coord">
                 <div class="sub-divider-label" style="border-top:none; margin-top:2px; padding-top:0;">
-                  <span class="thai-hint">พิกัดจุดปลายแนวแกน Y (+Y Ref)</span>
+                  <span class="thai-hint">พิกัดจุดอ้างอิงทิศทาง +X</span>
                   <span class="inline-bm-btn" onclick="openBmPicker('l2g-nr','l2g-er', () => syncTransRef('l2g'))">[BM]</span>
                 </div>
                 <div class="input-grid-2">
-                  <div class="field-wrap"><label>REF NORTH (Nref)</label><input type="number" id="l2g-nr" inputmode="decimal" placeholder="0.000" step="any" oninput="syncTransRef('l2g')"></div>
-                  <div class="field-wrap"><label>REF EAST (Eref)</label><input type="number" id="l2g-er" inputmode="decimal" placeholder="0.000" step="any" oninput="syncTransRef('l2g')"></div>
+                  <div class="field-wrap"><label>BS NORTH (Nref)</label><input type="number" id="l2g-nr" inputmode="decimal" placeholder="0.000" step="any" oninput="syncTransRef('l2g')"></div>
+                  <div class="field-wrap"><label>BS EAST (Eref)</label><input type="number" id="l2g-er" inputmode="decimal" placeholder="0.000" step="any" oninput="syncTransRef('l2g')"></div>
                 </div>
               </div>
               <div id="l2g-ref-azim" style="display:none;">
-                <div class="sub-divider-label" style="border-top:none; margin-top:2px; padding-top:0;"><span class="thai-hint">มุม Azimuth แนวแกน Y (+Y)</span></div>
+                <div class="sub-divider-label" style="border-top:none; margin-top:2px; padding-top:0;"><span class="thai-hint">มุม Azimuth อ้างอิงทิศทาง +X</span></div>
                 <div class="input-grid-3">
                   <div class="field-wrap"><label>DEG (°)</label><input type="number" id="l2g-deg" inputmode="decimal" placeholder="0" step="any" oninput="syncTransRef('l2g')"></div>
                   <div class="field-wrap"><label>MIN (')</label><input type="number" id="l2g-min" inputmode="decimal" placeholder="0" step="any" oninput="syncTransRef('l2g')"></div>
@@ -425,10 +912,10 @@
               </div>
             </div>
             <div class="point-group">
-              <span class="point-title">TARGET CH &amp; OFF <span class="thai-hint">(ค่าที่ต้องการแปลงกลับ)</span></span>
+              <span class="point-title">TARGET LOCAL <span class="thai-hint">(พิกัด Local ที่ต้องการแปลง)</span></span>
               <div class="input-grid-2">
-                <div class="field-wrap"><label>CHAINAGE (ตาม Y)</label><input type="number" id="l2g-ch" inputmode="decimal" placeholder="0.000" step="any"></div>
-                <div class="field-wrap"><label>OFFSET (ขวา+ / ซ้าย-)</label><input type="number" id="l2g-off" inputmode="decimal" placeholder="0.000" step="any"></div>
+                <div class="field-wrap"><label>LOCAL X (ตามแนว)</label><input type="number" id="l2g-x" inputmode="decimal" placeholder="0.000" step="any"></div>
+                <div class="field-wrap"><label>LOCAL Y (ซ้าย+)</label><input type="number" id="l2g-y" inputmode="decimal" placeholder="0.000" step="any"></div>
               </div>
             </div>
             <div class="keypad-grid-2">
@@ -441,7 +928,9 @@
             </div>
           </div>
 
-          <!-- 06 SET OUT -->
+          <!-- ==========================================
+               06 SET OUT
+               ========================================== -->
           <div id="view-setout" class="view-section">
             <div class="calc-screen">
               <div class="screen-header"><span>SET OUT DATA (CW FROM BS)</span><span>DMS / M</span></div>
@@ -478,7 +967,7 @@
               <button class="retro-btn" onclick="clearSetOut()">CLR TGT</button>
               <button class="retro-btn btn-primary" onclick="calcSetOut()">= SET OUT</button>
             </div>
-            <div class="action-bar-log single"><button class="retro-btn" onclick="logSetOut()">SAVE LOG (AUTO SYNC)</button></div>
+            <div class="action-bar-log single"><button class="retro-btn" onclick="logSetOut()">SAVE LOG TO SHEET</button></div>
           </div>
 
         </div>
@@ -505,209 +994,263 @@
     </div>
 
     <script>
-      const STORE_KEY = 'survey_toolkit_pwa_v2';
-      let apiUrl = '';
+      // ==========================================
+      // ตั้งค่า URL เริ่มต้นของ GAS Web App (/exec)
+      // (หากใส่ลิงก์ไว้ตรงนี้ ทีมงานเปิดแอปแล้วล็อกอินได้ทันทีโดยไม่ต้องแนบ ?api=)
+      // ==========================================
+      const DEFAULT_GAS_URL = 'https://script.google.com/macros/s/AKfycbzlYm3rOy1uhMeQek6SzGM7sq0pDZua2h_S3rn7R83lr31IdeXhlWuYbSetuWCP6pOfig/exec';
+      const GAS_URL_KEY = 'survey_gas_webapp_url';
+      const TOKEN_KEY = 'survey_session_token';
+
       let sessionToken = '';
       let currentUser = null;
       let controlPoints = [];
       let dbSheetUrl = '';
-      let offlineLogs = [];
       let activeBmTarget = null;
       let transRefMode = 'coord';
       let isBusy = false;
 
-      // ลงทะเบียน Service Worker สำหรับทำงาน Offline 100%
-      if ('serviceWorker' in navigator) {
-        window.addEventListener('load', () => {
-          navigator.serviceWorker.register('./sw.js').catch(() => {});
-        });
+      // ==========================================
+      // GAS URL & SHARE LINK MANAGEMENT (ADMIN ONLY)
+      // ==========================================
+      function getActiveGasUrl() {
+        return (localStorage.getItem(GAS_URL_KEY) || DEFAULT_GAS_URL || '').trim();
       }
 
-      function saveLocalState() {
-        try {
-          localStorage.setItem(STORE_KEY, JSON.stringify({
-            apiUrl, sessionToken, currentUser, controlPoints, dbSheetUrl, offlineLogs
-          }));
-        } catch (e) {}
-      }
+      function syncGasUrlInputs(urlVal, isLocked) {
+        const loginInp = document.getElementById('login-gas-url');
+        const loginHint = document.getElementById('login-gas-hint');
+        const adminInp = document.getElementById('admin-gas-url');
 
-      function loadLocalState() {
-        try {
-          const raw = localStorage.getItem(STORE_KEY);
-          if (!raw) return;
-          const st = JSON.parse(raw);
-          apiUrl = st.apiUrl || '';
-          sessionToken = st.sessionToken || '';
-          currentUser = st.currentUser || null;
-          controlPoints = Array.isArray(st.controlPoints) ? st.controlPoints : [];
-          dbSheetUrl = st.dbSheetUrl || '';
-          offlineLogs = Array.isArray(st.offlineLogs) ? st.offlineLogs : [];
-        } catch (e) {}
-      }
-
-      function setStatus(txt) {
-        document.getElementById('statusText').innerText = txt;
-      }
-
-      function updateNetAndSyncUi() {
-        const online = navigator.onLine;
-        const clockEl = document.getElementById('sysClock');
-        const now = new Date();
-        const hh = String(now.getHours()).padStart(2, '0');
-        const min = String(now.getMinutes()).padStart(2, '0');
-        clockEl.innerText = `${online ? 'NET:ON' : 'OFFLINE'} ${hh}:${min}`;
-
-        const syncBtn = document.getElementById('menuSyncBtn');
-        if (currentUser) {
-          syncBtn.style.display = 'inline-block';
-          if (offlineLogs.length > 0) {
-            syncBtn.innerText = `[SYNC:${offlineLogs.length}]`;
-            syncBtn.classList.add('has-queue');
-          } else {
-            syncBtn.innerText = '[SYNC]';
-            syncBtn.classList.remove('has-queue');
-          }
-        } else {
-          syncBtn.style.display = 'none';
+        if (loginInp) {
+          loginInp.value = urlVal;
+          loginInp.readOnly = isLocked;
+        }
+        if (loginHint) {
+          loginHint.textContent = isLocked
+            ? '(ล็อกค่าแล้ว - แก้ไขได้เฉพาะ Admin)'
+            : '(วางครั้งเดียว ระบบจำอัตโนมัติ)';
+        }
+        if (adminInp) {
+          adminInp.value = urlVal;
+          adminInp.readOnly = false;
         }
       }
-      setInterval(updateNetAndSyncUi, 1000);
-      window.addEventListener('online', () => { updateNetAndSyncUi(); if (currentUser && offlineLogs.length > 0) syncNow(true); });
-      window.addEventListener('offline', updateNetAndSyncUi);
 
-      async function callGasApi(payload) {
-        if (!apiUrl) throw new Error('ยังไม่ได้ระบุ GAS Web App URL');
-        const res = await fetch(apiUrl, {
+      function initGasUrl() {
+        try {
+          const params = new URLSearchParams(window.location.search);
+          const urlFromParam = params.get('api');
+          if (urlFromParam && /^https:\/\/script\.google\.com\/macros\/s\//.test(urlFromParam.trim())) {
+            localStorage.setItem(GAS_URL_KEY, urlFromParam.trim());
+            window.history.replaceState({}, document.title, window.location.pathname);
+          }
+        } catch (e) {}
+
+        const activeUrl = getActiveGasUrl();
+        const isAdmin = !!(currentUser && currentUser.role === 'ADMIN');
+        syncGasUrlInputs(activeUrl, !isAdmin && !!activeUrl);
+      }
+
+      function handleGasUrlInput(val) {
+        if (currentUser && currentUser.role !== 'ADMIN') return;
+        const clean = String(val || '').trim();
+        if (clean) {
+          localStorage.setItem(GAS_URL_KEY, clean);
+        } else {
+          localStorage.removeItem(GAS_URL_KEY);
+        }
+        const loginInp = document.getElementById('login-gas-url');
+        const adminInp = document.getElementById('admin-gas-url');
+        if (loginInp && document.activeElement !== loginInp) loginInp.value = clean;
+        if (adminInp && document.activeElement !== adminInp) adminInp.value = clean;
+      }
+
+      function copyTeamShareLink() {
+        if (!currentUser || currentUser.role !== 'ADMIN') {
+          alert('เฉพาะ ADMIN เท่านั้นที่สร้างลิงก์แชร์ได้');
+          return;
+        }
+        const gasUrl = getActiveGasUrl();
+        if (!gasUrl || !/^https:\/\/script\.google\.com\/macros\/s\//.test(gasUrl)) {
+          alert('กรุณากรอก GAS WEB APP URL ที่ถูกต้อง (.../exec) ก่อนสร้างลิงก์แชร์');
+          return;
+        }
+        const baseUrl = window.location.origin + window.location.pathname;
+        const fullShareUrl = baseUrl + '?api=' + encodeURIComponent(gasUrl);
+
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+          navigator.clipboard.writeText(fullShareUrl).catch(() => {});
+        }
+        prompt('คัดลอกลิงก์ด้านล่างนี้ ส่งให้ทีมงานใน LINE (กดเปิดครั้งเดียวระบบจะจำค่าให้อัตโนมัติ):', fullShareUrl);
+      }
+
+      // ==========================================
+      // HYBRID BACKEND CALLER (รองรับทั้ง GAS และ GitHub PWA)
+      // ==========================================
+      function callBackend(methodName, args, onSuccess, onFailure) {
+        if (typeof google !== 'undefined' && google.script && google.script.run) {
+          google.script.run
+            .withSuccessHandler(onSuccess)
+            .withFailureHandler(onFailure)[methodName](...args);
+          return;
+        }
+
+        const gasUrl = getActiveGasUrl();
+        if (!gasUrl) {
+          onFailure(new Error('กรุณาระบุ GAS WEB APP URL ก่อนเชื่อมต่อระบบ'));
+          return;
+        }
+
+        fetch(gasUrl, {
           method: 'POST',
           headers: { 'Content-Type': 'text/plain;charset=utf-8' },
-          body: JSON.stringify(payload)
-        });
-        if (!res.ok) throw new Error('HTTP ' + res.status);
-        return await res.json();
+          body: JSON.stringify({ action: methodName, args: args })
+        })
+          .then(res => {
+            if (!res.ok) throw new Error('HTTP ' + res.status);
+            return res.json();
+          })
+          .then(onSuccess)
+          .catch(onFailure);
+      }
+
+      // ==========================================
+      // SESSION & ROLE UI
+      // ==========================================
+      function saveToken(t) { try { sessionStorage.setItem(TOKEN_KEY, t); } catch (e) {} }
+      function loadToken()  { try { return sessionStorage.getItem(TOKEN_KEY); } catch (e) { return null; } }
+      function clearToken() { try { sessionStorage.removeItem(TOKEN_KEY); localStorage.removeItem(TOKEN_KEY); } catch (e) {} }
+      function setStatus(txt) { document.getElementById('statusText').innerText = txt; }
+
+      function checkServerRes(res) {
+        if (!res) { setStatus('SYS ERR'); alert('ไม่ได้รับข้อมูลตอบกลับจากเซิร์ฟเวอร์'); return false; }
+        if (res.authError) { alert(res.message || 'Session หมดอายุ'); doLogout(); return false; }
+        if (res.permError) { setStatus('DENIED'); alert(res.message || 'ไม่มีสิทธิ์'); return false; }
+        return true;
       }
 
       function applyRoleUi() {
         const isAdmin = !!(currentUser && currentUser.role === 'ADMIN');
         document.querySelectorAll('.admin-only').forEach(el => el.style.display = isAdmin ? '' : 'none');
         document.querySelectorAll('[data-admin-bar]').forEach(el => el.classList.toggle('single', !isAdmin));
+
+        const activeUrl = getActiveGasUrl();
+        syncGasUrlInputs(activeUrl, !isAdmin && !!activeUrl);
       }
+
+      function updateClock() {
+        const now = new Date();
+        const mm = String(now.getMonth() + 1).padStart(2, '0');
+        const dd = String(now.getDate()).padStart(2, '0');
+        const yy = String(now.getFullYear()).slice(-2);
+        const hh = String(now.getHours()).padStart(2, '0');
+        const min = String(now.getMinutes()).padStart(2, '0');
+        document.getElementById('sysClock').innerText = `${mm}/${dd}/${yy} ${hh}:${min}`;
+      }
+      setInterval(updateClock, 1000);
+      updateClock();
 
       window.onload = function() {
-        loadLocalState();
-        updateNetAndSyncUi();
-        if (apiUrl) document.getElementById('login-api').value = apiUrl;
+        localStorage.removeItem(TOKEN_KEY);
+        initGasUrl();
 
-        // เปิดเข้าใช้งานทันทีจากข้อมูลแคชในเครื่อง (ทำงานได้แม้ออฟไลน์ 100%)
-        if (sessionToken && currentUser) {
-          enterDesktop(true);
-          if (navigator.onLine) syncNow(true);
-        }
+        const savedToken = loadToken();
+        if (!savedToken) return;
+        setStatus('CHECKING...');
+        callBackend(
+          'validateSession',
+          [savedToken],
+          res => {
+            if (res && res.success) onAuthSuccess(res);
+            else { clearToken(); setStatus('LOCKED'); }
+          },
+          () => setStatus('LOCKED')
+        );
       };
 
-      function showLoginScreen(errMsg) {
-        document.querySelectorAll('.view-section').forEach(el => el.classList.remove('active'));
-        document.getElementById('view-login').classList.add('active');
-        document.getElementById('winTitle').innerText = 'C: SYS_LOGIN.EXE';
-        document.getElementById('winPath').innerText = '◎ 🔒 /AUTH/LOGIN';
-        document.getElementById('footerLeft').innerText = offlineLogs.length > 0 ? `QUEUE: ${offlineLogs.length} LOGS` : 'GUEST MODE';
-        ['menuHomeBtn', 'menuSyncBtn', 'menuLogoutBtn', 'menuDbBtn', 'footerRight']
-          .forEach(id => document.getElementById(id).style.display = 'none');
-        if (apiUrl) document.getElementById('login-api').value = apiUrl;
-        if (currentUser && currentUser.username) document.getElementById('login-user').value = currentUser.username;
-        const errBox = document.getElementById('loginErrorBox');
-        if (errMsg) {
-          errBox.innerText = errMsg;
-          errBox.style.display = 'block';
-        } else {
-          errBox.style.display = 'none';
-        }
-      }
-
-      async function doLogin() {
+      function doLogin() {
         if (isBusy) return;
-        const urlInput = document.getElementById('login-api').value.trim();
         const u = document.getElementById('login-user').value.trim();
         const p = document.getElementById('login-pass').value;
         const errBox = document.getElementById('loginErrorBox');
 
-        if (!/^https:\/\/script\.google\.com\/macros\/s\/.+\/exec$/.test(urlInput)) {
-          errBox.innerText = 'กรุณาวาง GAS Web App URL ที่ลงท้ายด้วย /exec ให้ถูกต้อง';
-          errBox.style.display = 'block';
-          return;
-        }
         if (!u || !p) {
           errBox.innerText = 'กรุณากรอก Username และ Password ให้ครบถ้วน';
           errBox.style.display = 'block';
           return;
         }
-        if (!navigator.onLine) {
-          errBox.innerText = 'ต้องเชื่อมต่ออินเทอร์เน็ตสำหรับการ Login ครั้งแรก';
-          errBox.style.display = 'block';
-          return;
-        }
-
-        apiUrl = urlInput;
         errBox.style.display = 'none';
         setStatus('AUTH...');
         isBusy = true;
 
-        try {
-          const res = await callGasApi({ action: 'login', username: u, password: p });
-          isBusy = false;
-          document.getElementById('login-pass').value = '';
-          if (res && res.success) {
-            sessionToken = res.token;
-            currentUser = res.user;
-            controlPoints = Array.isArray(res.points) ? res.points : [];
-            dbSheetUrl = res.sheetUrl || '';
-            saveLocalState();
-            enterDesktop(false);
-            if (offlineLogs.length > 0) syncNow(true);
-          } else {
-            setStatus('DENIED');
-            errBox.innerText = (res && res.message) ? res.message : 'เข้าสู่ระบบไม่สำเร็จ';
+        callBackend(
+          'loginUser',
+          [u, p],
+          res => {
+            isBusy = false;
+            document.getElementById('login-pass').value = '';
+            if (res && res.success) {
+              saveToken(res.token);
+              onAuthSuccess(res);
+            } else {
+              setStatus('DENIED');
+              errBox.innerText = (res && res.message) ? res.message : 'เข้าสู่ระบบไม่สำเร็จ';
+              errBox.style.display = 'block';
+            }
+          },
+          err => {
+            isBusy = false;
+            setStatus('SYS ERR');
+            errBox.innerText = (err && err.message) ? err.message : 'เชื่อมต่อเซิร์ฟเวอร์ไม่สำเร็จ กรุณาลองใหม่';
             errBox.style.display = 'block';
           }
-        } catch (err) {
-          isBusy = false;
-          setStatus('SYS ERR');
-          errBox.innerText = 'เชื่อมต่อ GAS ไม่สำเร็จ: ' + err.message;
-          errBox.style.display = 'block';
-        }
+        );
       }
 
-      function enterDesktop(isOfflineBoot) {
+      function onAuthSuccess(res) {
+        sessionToken = res.token;
+        currentUser = res.user;
+        controlPoints = Array.isArray(res.points) ? res.points : [];
+        dbSheetUrl = res.sheetUrl || '';
+
         document.getElementById('menuHomeBtn').style.display = 'inline-block';
         document.getElementById('menuLogoutBtn').style.display = 'inline-block';
         document.getElementById('menuDbBtn').style.display = dbSheetUrl ? 'inline-block' : 'none';
         document.getElementById('footerRight').style.display = 'inline-block';
         applyRoleUi();
-        updateNetAndSyncUi();
         openApp('home');
-        setStatus(isOfflineBoot && !navigator.onLine ? 'OFFLINE READY' : 'READY');
       }
 
       function doLogout() {
-        if (offlineLogs.length > 0 && !confirm(`ยังมีข้อมูล Log ค้างส่ง ${offlineLogs.length} รายการ ต้องการออกจากระบบหรือไม่? (คิวข้อมูลจะยังคงเก็บไว้ในเครื่อง)`)) {
-          return;
-        }
         const oldToken = sessionToken;
         sessionToken = '';
         currentUser = null;
+        controlPoints = [];
+        dbSheetUrl = '';
         isBusy = false;
+        clearToken();
         closeBmPicker();
-        saveLocalState();
 
         document.querySelectorAll('.window-body input').forEach(inp => {
-          if (inp.id === 'login-api') return;
+          if (inp.id === 'login-gas-url' || inp.id === 'admin-gas-url') return;
           inp.value = (inp.id === 'dev-tol') ? '0.010' : '';
         });
         clearInverse(); clearPolar(); clearDev(); clearG2L(); clearL2G(); clearSetOut();
-        showLoginScreen('');
+        applyRoleUi();
+
+        ['menuHomeBtn', 'menuLogoutBtn', 'menuDbBtn', 'footerRight']
+          .forEach(id => document.getElementById(id).style.display = 'none');
+
+        document.querySelectorAll('.view-section').forEach(el => el.classList.remove('active'));
+        document.getElementById('view-login').classList.add('active');
+        document.getElementById('winTitle').innerText = 'C: SYS_LOGIN.EXE';
+        document.getElementById('winPath').innerText = '◎ 🔒 /AUTH/LOGIN';
+        document.getElementById('footerLeft').innerText = 'GUEST MODE';
         setStatus('LOGGED OUT');
 
-        if (oldToken && navigator.onLine && apiUrl) {
-          callGasApi({ action: 'logout', token: oldToken }).catch(() => {});
+        if (oldToken) {
+          callBackend('logoutUser', [oldToken], () => {}, () => {});
         }
       }
 
@@ -722,19 +1265,19 @@
         inverse: { title: 'C: 01_INVERSE.APP',  path: '◎ 📁 /COGO/INVERSE' },
         polar:   { title: 'C: 02_POLAR.APP',    path: '◎ 📁 /COGO/POLAR' },
         dev:     { title: 'C: 03_DEVCHECK.APP', path: '◎ 📁 /FIELD/DEVCHECK' },
-        g2l:     { title: 'C: 04_ALIGN.APP',    path: '◎ 📁 /TRANS/ALIGN_CH_OFF' },
-        l2g:     { title: 'C: 05_CHOFF2GLO.APP',path: '◎ 📁 /TRANS/CHOFF_TO_GLO' },
+        g2l:     { title: 'C: 04_GLO2LOC.APP',  path: '◎ 📁 /TRANS/GLO_TO_LOC' },
+        l2g:     { title: 'C: 05_LOC2GLO.APP',  path: '◎ 📁 /TRANS/LOC_TO_GLO' },
         setout:  { title: 'C: 06_SETOUT.APP',   path: '◎ 📁 /FIELD/SETOUT' }
       };
 
       function openApp(appId) {
-        if (!currentUser) { showLoginScreen(''); return; }
+        if (!currentUser) { doLogout(); return; }
         document.querySelectorAll('.view-section').forEach(el => el.classList.remove('active'));
         document.getElementById('view-' + appId).classList.add('active');
         document.getElementById('winTitle').innerText = appMeta[appId].title;
         document.getElementById('winPath').innerText = appMeta[appId].path;
         document.getElementById('footerLeft').innerText = `USR: ${currentUser.username} (${controlPoints.length} BM)`;
-        setStatus(navigator.onLine ? 'READY' : 'OFFLINE');
+        setStatus('READY');
         window.scrollTo(0, 0);
       }
 
@@ -743,6 +1286,9 @@
         openApp('home');
       }
 
+      // ==========================================
+      // BM PICKER MODAL (SAFE DOM)
+      // ==========================================
       function openBmPicker(nInputId, eInputId, callback) {
         activeBmTarget = { nId: nInputId, eId: eInputId, cb: callback };
         document.getElementById('bmSearchInput').value = '';
@@ -806,95 +1352,47 @@
         closeBmPicker();
       }
 
-      function formatLocalTimestamp() {
-        const d = new Date();
-        const pad = n => String(n).padStart(2, '0');
-        return `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())} ${pad(d.getHours())}:${pad(d.getMinutes())}:${pad(d.getSeconds())}`;
-      }
-
-      // บันทึกลงคิวในเครื่องก่อนเสมอ แล้วพยายาม Sync ทันทีถ้ามีสัญญาณ
+      // ==========================================
+      // SAVE LOG & CONTROL POINT
+      // ==========================================
       function pushLog(moduleName, pointRef, inputsStr, outputsStr) {
+        if (isBusy) return;
         const remark = prompt('ระบุหมายเหตุ / ชื่อจุดสำรวจ (เว้นว่างได้):', '');
         if (remark === null) return;
 
-        offlineLogs.push({
-          timestamp: formatLocalTimestamp(),
-          module: moduleName,
-          pointRef: pointRef,
-          inputs: inputsStr,
-          outputs: outputsStr,
-          remark: remark.slice(0, 500)
-        });
-        saveLocalState();
-        updateNetAndSyncUi();
-
-        if (navigator.onLine) {
-          syncNow(true);
-        } else {
-          setStatus(`QUEUED (${offlineLogs.length})`);
-        }
-      }
-
-      async function syncNow(silent) {
-        if (isBusy || !sessionToken) return;
-        if (!navigator.onLine) {
-          if (!silent) alert('ขณะนี้ไม่มีสัญญาณอินเทอร์เน็ต ข้อมูลถูกเก็บไว้ในเครื่องแล้ว');
-          setStatus('OFFLINE');
-          return;
-        }
-
         isBusy = true;
-        setStatus('SYNCING...');
-        const batchCount = offlineLogs.length;
-
-        try {
-          const res = await callGasApi({
-            action: 'sync',
-            token: sessionToken,
-            logs: offlineLogs
-          });
-          isBusy = false;
-
-          if (res && res.authError) {
-            // คงคิว offlineLogs ไว้ใน localStorage ไม่ให้ข้อมูลหน้างานหาย
-            sessionToken = '';
-            saveLocalState();
-            showLoginScreen(res.message || 'Session หมดอายุ กรุณา Login ใหม่เพื่อส่งข้อมูลค้างส่ง');
-            return;
-          }
-
-          if (res && res.success) {
-            if (batchCount > 0) {
-              offlineLogs.splice(0, batchCount);
+        setStatus('SAVING...');
+        callBackend(
+          'saveLogRecord',
+          [sessionToken, {
+            module: moduleName,
+            pointRef: pointRef,
+            inputs: inputsStr,
+            outputs: outputsStr,
+            remark: remark.slice(0, 500)
+          }],
+          res => {
+            isBusy = false;
+            if (!checkServerRes(res)) return;
+            if (res.status !== 'OK') {
+              setStatus('SAVE ERR');
+              alert('บันทึกไม่สำเร็จ: ' + (res.message || 'unknown'));
+              return;
             }
-            if (Array.isArray(res.points)) {
-              controlPoints = res.points;
-              if (currentUser) {
-                document.getElementById('footerLeft').innerText = `USR: ${currentUser.username} (${controlPoints.length} BM)`;
-              }
-            }
-            saveLocalState();
-            updateNetAndSyncUi();
-            setStatus('SYNCED ' + (res.serverTime || 'OK'));
-          } else {
-            setStatus('SYNC ERR');
-            if (!silent) alert('ซิงค์ไม่สำเร็จ: ' + ((res && res.message) || 'unknown'));
+            setStatus('SAVED ' + res.time);
+          },
+          err => {
+            isBusy = false;
+            setStatus('SAVE ERR');
+            alert('บันทึกไม่สำเร็จ: ' + err.message);
           }
-        } catch (err) {
-          isBusy = false;
-          setStatus('SYNC FAIL');
-          if (!silent) alert('เชื่อมต่อเซิร์ฟเวอร์ไม่สำเร็จ ข้อมูลยังอยู่ในคิวเครื่อง');
-        }
+        );
       }
 
-      async function pushNewBm(nVal, eVal) {
+      function pushNewBm(nVal, eVal) {
         if (isBusy) return;
         if (!currentUser || currentUser.role !== 'ADMIN') {
           alert('เฉพาะ ADMIN เท่านั้นที่เพิ่มหรือแก้ไขหมุดได้');
-          return;
-        }
-        if (!navigator.onLine) {
-          alert('การบันทึกหมุดหลักฐานใหม่เข้าฐานข้อมูลกลางต้องใช้อินเทอร์เน็ต');
           return;
         }
         if (!isFinite(nVal) || !isFinite(eVal)) { setStatus('ERR: INPUT'); return; }
@@ -913,36 +1411,27 @@
 
         isBusy = true;
         setStatus('ADD BM...');
-        try {
-          const res = await callGasApi({
-            action: 'saveBm',
-            token: sessionToken,
-            point: { id: ptId.trim(), n: nVal, e: eVal, desc: desc.slice(0, 200) }
-          });
-          isBusy = false;
-
-          if (res && res.authError) {
-            sessionToken = '';
-            saveLocalState();
-            showLoginScreen(res.message || 'Session หมดอายุ กรุณา Login ใหม่');
-            return;
-          }
-          if (res && res.success) {
+        callBackend(
+          'saveNewControlPoint',
+          [sessionToken, { id: ptId.trim(), n: nVal, e: eVal, desc: desc.slice(0, 200) }],
+          res => {
+            isBusy = false;
+            if (!checkServerRes(res)) return;
             controlPoints = Array.isArray(res.points) ? res.points : [];
-            saveLocalState();
             document.getElementById('footerLeft').innerText = `USR: ${currentUser.username} (${controlPoints.length} BM)`;
             setStatus('BM SAVED');
-          } else {
+          },
+          err => {
+            isBusy = false;
             setStatus('BM ERR');
-            alert((res && res.message) || 'เพิ่มหมุดไม่สำเร็จ');
+            alert('เพิ่มหมุดไม่สำเร็จ: ' + err.message);
           }
-        } catch (err) {
-          isBusy = false;
-          setStatus('BM ERR');
-          alert('เพิ่มหมุดไม่สำเร็จ: ' + err.message);
-        }
+        );
       }
 
+      // ==========================================
+      // MATH & SURVEY CALCULATIONS
+      // ==========================================
       function formatDMS(deg, secDecimals = 1) {
         deg = ((deg % 360) + 360) % 360;
         const factor = Math.pow(10, secDecimals);
@@ -1057,7 +1546,7 @@
         pushNewBm(parseFloat(document.getElementById('pol-n2').innerText), parseFloat(document.getElementById('pol-e2').innerText));
       }
 
-      // 03 DEV CHECK (ไม่มี (L) / (R) ต่อท้าย Offset)
+      // 03 DEV CHECK
       function calcDev() {
         const nd = getVal('dev-nd'), ed = getVal('dev-ed'), na = getVal('dev-na'), ea = getVal('dev-ea');
         let desAzDeg = getDmsDeg('dev-deg', 'dev-min', 'dev-sec', true);
@@ -1069,13 +1558,13 @@
         const dN = na - nd, dE = ea - ed;
         const err = Math.hypot(dN, dE), errAz = calcAzimuthDeg(dN, dE);
         const desRad = desAzDeg * (Math.PI / 180);
-        
-        const chainage = dN * Math.cos(desRad) + dE * Math.sin(desRad);
+        const dCh = dN * Math.cos(desRad) + dE * Math.sin(desRad);
         const offset = -dN * Math.sin(desRad) + dE * Math.cos(desRad);
+        const sideTag = Math.abs(offset) >= 0.0005 ? (offset > 0 ? ' (R)' : ' (L)') : '';
 
         document.getElementById('dev-err').innerText = err.toFixed(3) + ' m';
-        document.getElementById('dev-ch').innerText = formatSigned(chainage, 3) + ' m';
-        document.getElementById('dev-off').innerText = formatSigned(offset, 3) + ' m';
+        document.getElementById('dev-ch').innerText = formatSigned(dCh, 3) + ' m';
+        document.getElementById('dev-off').innerText = formatSigned(offset, 3) + ' m' + sideTag;
         document.getElementById('dev-dn').innerText = formatSigned(dN, 3);
         document.getElementById('dev-de').innerText = formatSigned(dE, 3);
         document.getElementById('dev-az').innerText = formatDMS(errAz, 1);
@@ -1113,7 +1602,7 @@
         );
       }
 
-      // 04 & 05 TRANS
+      // 04 & 05 TRANSFORMATION
       function setTransMode(mode, syncBoth = true) {
         transRefMode = mode;
         (syncBoth ? ['g2l', 'l2g'] : ['g2l']).forEach(p => {
@@ -1149,17 +1638,14 @@
       function calcG2L() {
         const n0 = getVal('g2l-n0'), e0 = getVal('g2l-e0'), gn = getVal('g2l-n'), ge = getVal('g2l-e');
         const azDeg = getTransAxisAzDeg('g2l');
-        if (azDeg === -999) { setStatus('ERR: REF=0'); return; }
+        if (azDeg === -999) { setStatus('ERR: BS=0'); return; }
         if ([n0, e0, gn, ge, azDeg].some(isNaN)) { setStatus('ERR: INPUT'); return; }
-        
         const azRad = azDeg * (Math.PI / 180);
         const dN = gn - n0, dE = ge - e0;
-        
-        const chainage = dN * Math.cos(azRad) + dE * Math.sin(azRad);
-        const offset = -dN * Math.sin(azRad) + dE * Math.cos(azRad);
-
-        document.getElementById('g2l-ch').innerText = formatSigned(chainage, 3) + ' m';
-        document.getElementById('g2l-off').innerText = formatSigned(offset, 3) + ' m';
+        const localX = dN * Math.cos(azRad) + dE * Math.sin(azRad);
+        const localY = dN * Math.sin(azRad) - dE * Math.cos(azRad);
+        document.getElementById('g2l-lx').innerText = localX.toFixed(3);
+        document.getElementById('g2l-ly').innerText = localY.toFixed(3);
         document.getElementById('g2l-axis-az').innerText = 'AZ: ' + formatDMS(azDeg, 1);
         setStatus('DONE');
       }
@@ -1167,8 +1653,8 @@
       function clearG2L() {
         document.getElementById('g2l-n').value = '';
         document.getElementById('g2l-e').value = '';
-        document.getElementById('g2l-ch').innerText = '0.000 m';
-        document.getElementById('g2l-off').innerText = '0.000 m';
+        document.getElementById('g2l-lx').innerText = '0.000';
+        document.getElementById('g2l-ly').innerText = '0.000';
         setStatus('CLEARED');
       }
 
@@ -1177,23 +1663,21 @@
         const gn = getVal('g2l-n'), ge = getVal('g2l-e'), azDeg = getTransAxisAzDeg('g2l');
         if ([gn, ge, azDeg].some(isNaN) || azDeg === -999) return;
         pushLog(
-          '04_ALIGN_G2L',
-          `G->CH/OFF (${transRefMode.toUpperCase()})`,
+          '04_GLO2LOC',
+          `G->L (${transRefMode.toUpperCase()})`,
           `Glob(${gn.toFixed(3)},${ge.toFixed(3)}) Az=${formatDMS(azDeg, 1)}`,
-          `CH=${document.getElementById('g2l-ch').innerText}, Off=${document.getElementById('g2l-off').innerText}`
+          `Local X=${document.getElementById('g2l-lx').innerText}, Y=${document.getElementById('g2l-ly').innerText}`
         );
       }
 
       function calcL2G() {
-        const n0 = getVal('l2g-n0'), e0 = getVal('l2g-e0'), ch = getVal('l2g-ch'), off = getVal('l2g-off');
+        const n0 = getVal('l2g-n0'), e0 = getVal('l2g-e0'), lx = getVal('l2g-x'), ly = getVal('l2g-y');
         const azDeg = getTransAxisAzDeg('l2g');
-        if (azDeg === -999) { setStatus('ERR: REF=0'); return; }
-        if ([n0, e0, ch, off, azDeg].some(isNaN)) { setStatus('ERR: INPUT'); return; }
-        
+        if (azDeg === -999) { setStatus('ERR: BS=0'); return; }
+        if ([n0, e0, lx, ly, azDeg].some(isNaN)) { setStatus('ERR: INPUT'); return; }
         const azRad = azDeg * (Math.PI / 180);
-        const gn = n0 + (ch * Math.cos(azRad) - off * Math.sin(azRad));
-        const ge = e0 + (ch * Math.sin(azRad) + off * Math.cos(azRad));
-
+        const gn = n0 + (lx * Math.cos(azRad) + ly * Math.sin(azRad));
+        const ge = e0 + (lx * Math.sin(azRad) - ly * Math.cos(azRad));
         document.getElementById('l2g-gn').innerText = gn.toFixed(3);
         document.getElementById('l2g-ge').innerText = ge.toFixed(3);
         document.getElementById('l2g-axis-az').innerText = 'AZ: ' + formatDMS(azDeg, 1);
@@ -1201,8 +1685,8 @@
       }
 
       function clearL2G() {
-        document.getElementById('l2g-ch').value = '';
-        document.getElementById('l2g-off').value = '';
+        document.getElementById('l2g-x').value = '';
+        document.getElementById('l2g-y').value = '';
         document.getElementById('l2g-gn').innerText = '0.000';
         document.getElementById('l2g-ge').innerText = '0.000';
         setStatus('CLEARED');
@@ -1210,20 +1694,20 @@
 
       function logL2G() {
         calcL2G();
-        const ch = getVal('l2g-ch'), off = getVal('l2g-off'), azDeg = getTransAxisAzDeg('l2g');
-        if ([ch, off, azDeg].some(isNaN) || azDeg === -999) return;
+        const lx = getVal('l2g-x'), ly = getVal('l2g-y'), azDeg = getTransAxisAzDeg('l2g');
+        if ([lx, ly, azDeg].some(isNaN) || azDeg === -999) return;
         pushLog(
-          '05_ALIGN_L2G',
-          `CH/OFF->G (${transRefMode.toUpperCase()})`,
-          `CH=${ch.toFixed(3)}, Off=${off.toFixed(3)} Az=${formatDMS(azDeg, 1)}`,
+          '05_LOC2GLO',
+          `L->G (${transRefMode.toUpperCase()})`,
+          `Local(${lx.toFixed(3)},${ly.toFixed(3)}) Az=${formatDMS(azDeg, 1)}`,
           `Glob N=${document.getElementById('l2g-gn').innerText}, E=${document.getElementById('l2g-ge').innerText}`
         );
       }
 
       function saveL2GAsBm() {
         calcL2G();
-        const ch = getVal('l2g-ch'), off = getVal('l2g-off'), azDeg = getTransAxisAzDeg('l2g');
-        if ([ch, off, azDeg].some(isNaN) || azDeg === -999) return;
+        const lx = getVal('l2g-x'), ly = getVal('l2g-y'), azDeg = getTransAxisAzDeg('l2g');
+        if ([lx, ly, azDeg].some(isNaN) || azDeg === -999) return;
         pushNewBm(parseFloat(document.getElementById('l2g-gn').innerText), parseFloat(document.getElementById('l2g-ge').innerText));
       }
 
@@ -1259,7 +1743,17 @@
         calcSetOut();
         const ns = getVal('so-ns'), es = getVal('so-es'), nb = getVal('so-nb'), eb = getVal('so-eb'), nt = getVal('so-nt'), et = getVal('so-et');
         if ([ns, es, nb, eb, nt, et].some(isNaN)) return;
-        pushLog('06_SETOUT', 'STAKEOUT', `Stn(${ns.toFixed(3)},${es.toFixed(3)}) Tgt(${nt.toFixed(3)},${et.toFixed(3)})`, `HA=${document.getElementById('so-ha').innerText}, HD=${document.getElementById('so-hd').innerText}`);
+        pushLog('06_SETOUT', 'STAKEOUT', `Stn(${ns.toFixed(3)},${es.toFixed(3)}) BS_Az=${document.getElementById('so-bsaz').innerText} Tgt(${nt.toFixed(3)},${et.toFixed(3)})`, `HA=${document.getElementById('so-ha').innerText}, HD=${document.getElementById('so-hd').innerText}`);
+      }
+    </script>
+
+    <!-- PWA Service Worker Registration -->
+    <script>
+      if ('serviceWorker' in navigator) {
+        window.addEventListener('load', () => {
+          navigator.serviceWorker.register('./sw.js', { scope: './' })
+            .catch(err => console.warn('SW registration failed:', err));
+        });
       }
     </script>
   </body>
